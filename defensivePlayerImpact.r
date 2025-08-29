@@ -45,8 +45,6 @@ pbp_clean <- pbp %>%
     filter(wp <= 0.95 & wp >= 0.05) %>%
     mutate(season_week = paste0(season, "_", week))
 
-
-# pull a list of all unique player_id in playerStats
 playerIDs <- unique(playerStats$player_id)
 
 fPlayerDisplayName <- "Nick Bosa"
@@ -76,7 +74,6 @@ pbp_team_week <- pbp_clean %>%
 
 pbp_with_player <- pbp_team_week %>%
     left_join(fPlayerStats, by = c("defteam" = "team", "season_week")) %>%
-    # with_player = 1 for any season_week with player, 0 otherwise
     group_by(season_week) %>%
     mutate(with_player = ifelse(any(player_display_name == fPlayerDisplayName), 1, 0)) %>%
     ungroup() %>%
@@ -100,5 +97,3 @@ pbp_summary <- pbp_with_player %>%
     )  %>% 
     filter(with_player == 0)  %>% 
     arrange(avg_epa)
-
-
